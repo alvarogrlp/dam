@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<empleados>
+    <empleado>
+        <id>1</id>
+        <nombre>Pepe</nombre>
+        <fechaNacimiento>0/0/0000</fechaNacimiento>
+        <puesto>Dios</puesto>
+    </empleado>
+    <empleado>
+        <id>2</id>
+        <nombre>María López</nombre>
+        <fechaNacimiento>1995/08/22</fechaNacimiento>
+        <puesto>Diseñador</puesto>
+    </empleado>
+</empleados>
