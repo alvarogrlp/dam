@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+//Función que devuelve los múltiplos de 3 y 5 que sean menores al número indicado
 function multiplosTresOConcio(int $n) {
     $resultado = [];
 

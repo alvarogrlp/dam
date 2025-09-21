@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+//función que devuelve la secuencia collatz de un número indicado
 function secuenciaCollatz(int $n){
     $secuencia = [];
 

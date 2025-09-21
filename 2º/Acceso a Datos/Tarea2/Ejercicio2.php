@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+//Función que imprime una montaña de asteriscos repetida la cantidad de veces deseadas
 function asteriscos(int $altura, int $repeticiones) {
     $array1 = [];
     $resta = ($altura * 2) - 2;
