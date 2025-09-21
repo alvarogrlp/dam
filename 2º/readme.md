@@ -8,7 +8,6 @@
 
 > **Autor:** Álvaro  
 > **Ciclo:** CFGS Desarrollo de Aplicaciones Multiplataforma (2º curso)  
-> **Centro:** IES Puerto de la Cruz – Telesforo Bravo (Tenerife)
 
 ---
 

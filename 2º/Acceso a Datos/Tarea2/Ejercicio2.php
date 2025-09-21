@@ -25,8 +25,5 @@ for ($i = 1; $i <= $altura; $i++) {
     array_push($array1, "\n");
 }
 
-
-foreach($array1 as $algo) {
-    echo $algo;
-}
+echo implode ($array1);
 ?>
