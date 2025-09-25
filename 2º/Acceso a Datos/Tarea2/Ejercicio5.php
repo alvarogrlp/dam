@@ -17,5 +17,5 @@ function secuenciaCollatz(int $n){
     return $secuencia;
 }
 
-echo implode(' → ', secuenciaCollatz(6));
+echo implode(' → ', secuenciaCollatz(19));
 ?>
