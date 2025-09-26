@@ -42,5 +42,5 @@ $animales = array_filter(array_map("trim", explode("\n", $contenidoAni)));
 $adj = $adjetivos[array_rand($adjetivos)];
 $ani = $animales[array_rand($animales)];
 
-echo "🐾 Resultado: $adj $ani" . PHP_EOL;
+echo "Resultado: $adj $ani" . PHP_EOL;
 ?>
