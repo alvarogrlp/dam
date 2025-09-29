@@ -1,37 +1,26 @@
 <?php
 
-$entrada = "texto.txt";
-$salida  = "estadisticas.csv";
+$archivo = fopen("texto.txt", "r");
+fread($archivo, filesize("texto.txt"));
+$contenidoTxt = file_get_contents("texto.txt");
+$totalPalabras = str_word_count($contenidoTxt);
+fclose($archivo);
 
-if (!file_exists($entrada)) {
-    fwrite(STDERR, "No se encontró el archivo $entrada\n");
-    exit(1);
+$arrayEstadistica = ["palabra,frecuencia \n"];
+$arrayEstadistica[] = "palabras,total=$totalPalabras \n";
+
+$texto = strtolower($contenidoTxt);
+preg_match_all('/\p{L}+/u', $texto, $coincidencias);
+$frecuencias = array_count_values($coincidencias[0]);
+
+foreach ($frecuencias as $palabra => $cantidad) {
+    $arrayEstadistica[] = "$palabra,$cantidad \n";
 }
 
-$texto = file_get_contents($entrada);
-
-$texto = strtolower($texto);
-
-$texto = preg_replace('/[^\p{L}\p{N}\s]+/u', ' ', $texto);
-
-$palabras = preg_split('/\s+/', $texto, -1, PREG_SPLIT_NO_EMPTY);
-
-$frecuencias = array_count_values($palabras);
-
-ksort($frecuencias, SORT_STRING);
-
-$fp_out = fopen($salida, "w");
-
-$sep = ",";
-$enc = '"';
-$esc = "\\";
-
-fputcsv($fp_out, ["palabra", "frecuencia"], $sep, $enc, $esc);
-
-foreach ($frecuencias as $palabra => $count) {
-    fputcsv($fp_out, [$palabra, $count], $sep, $enc, $esc);
+$archivoCSV = fopen("estadisticas.csv", "w");
+foreach ($arrayEstadistica as $fila) {
+    fwrite($archivoCSV, $fila);
 }
+fclose($archivoCSV);
 
-fclose($fp_out);
-
-echo "Archivo $salida generado correctamente.\n";
+?>
