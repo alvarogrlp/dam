@@ -1,62 +1,51 @@
 <?php
-$entrada = "ops.csv";
-$salida  = "resultado.csv";
+$archivo = fopen("ops.csv", "r");
 
-if (!file_exists($entrada)) {
-    fwrite(STDERR, "No se encontró el archivo $entrada\n");
-    exit(1);
-}
+fread($archivo, filesize("ops.csv"));
+$contenido = file_get_contents("ops.csv");
+fclose($archivo);
 
-$fp_in  = fopen($entrada, "r");
-$fp_out = fopen($salida, "w");
+$arrayOriginal = explode("\n", $contenido);
 
-$sep = ",";   
-$enc = '"';  
-$esc = "\\";   
-
-$cabecera = fgetcsv($fp_in, 0, $sep, $enc, $esc);
-if ($cabecera === false) {
-    fwrite(STDERR, "El CSV está vacío.\n");
-    exit(1);
-}
-$cabecera[0] = ltrim($cabecera[0], "\xEF\xBB\xBF"); 
-$cabecera[] = "resultado";
-fputcsv($fp_out, $cabecera, $sep, $enc, $esc);
-
-while (($fila = fgetcsv($fp_in, 0, $sep, $enc, $esc)) !== false) {
-    if (count($fila) < 3) { 
-        continue;
+$archivo = fopen("resultado.csv", "w");
+for ($i = 1; $i < sizeof($arrayOriginal); $i++) {
+    $fila = trim($arrayOriginal[$i]);
+    $n1 = 0;
+    $n2 = 0;
+    $arrayTemporal = explode(",", $fila);
+    foreach ($arrayTemporal as $dato) {
+        fwrite($archivo, "$dato,");
+        if (!ctype_digit($dato)) {
+            $resultado = detectarOperacion($dato, $n1, $n2);
+            fwrite($archivo, $resultado . "\n");
+        }
+        $n1 = $n2;
+        $n2 = $dato;
     }
+}
+fclose($archivo);
 
-    [$z1, $z2, $op] = $fila;
-    $z1 = is_numeric($z1) ? $z1 + 0 : 0; 
-    $z2 = is_numeric($z2) ? $z2 + 0 : 0;
-
-    $op = trim($op);
-    $resultado = "";
-
-    switch ($op) {
-        case "suma":
-            $resultado = $z1 + $z2;
+//Funcion que detecta el tipo de operador en el documento;
+function detectarOperacion ($operador, $numero1, $numero2) {
+    $resultado = 0;
+     switch ($operador) {
+        case 'resta':
+            $resultado = $numero1 - $numero2;
             break;
-        case "resta":
-            $resultado = $z1 - $z2;
+        case 'producto':
+            $resultado = $numero1 * $numero2;
             break;
-        case "producto":
-            $resultado = $z1 * $z2;
-            break;
-        case "division":
-            $resultado = ($z2 == 0) ? "ERROR" : ($z1 / $z2);
+        case 'division':
+            if ($numero2 == 0) {
+                $resultado = "ERROR";
+                break;
+            }
+            $resultado = $numero1 / $numero2;
             break;
         default:
-            $resultado = "OP_NO_VALIDA";
-    }
-
-    $fila[] = $resultado;
-    fputcsv($fp_out, $fila, $sep, $enc, $esc);
+            $resultado = $numero1 + $numero2;
+            break;
+     }
+    return $resultado;
 }
-
-fclose($fp_in);
-fclose($fp_out);
-
-echo "Archivo $salida generado correctamente.\n";
+?>
