@@ -9,7 +9,7 @@ fclose($archivo);
 $arrayEstadistica = ["palabra,frecuencia \n"];
 $arrayEstadistica[] = "palabras,total=$totalPalabras \n";
 
-$texto = strtolower($contenidoTxt);
+$texto = mb_strtolower($contenidoTxt, "UTF-8");
 preg_match_all('/\p{L}+/u', $texto, $coincidencias);
 $frecuencias = array_count_values($coincidencias[0]);
 
